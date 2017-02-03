@@ -1,2 +1,3 @@
 tomorrow is another day
 This is Thursday @ 2017-01-13
+Today is Friday @2017-02-03
