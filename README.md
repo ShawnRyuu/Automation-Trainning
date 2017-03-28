@@ -103,7 +103,7 @@ The test case id is the unique identifier of one test case in quickbase. If will
 
 Every time to upload test result, it will overwrite the test run result status in the application of quickbase. 
 
-##### 3. What is [user token]()? How can I get my user token for some a application?
+##### 3. What is [user token](http://www.quickbase.com/quickbase-blog/july-2016-release-notes)? How can I get my user token for some a application?
 
 You can create your own user tokens in QuickBase and use them to run APIs and automation with your permissions. Many API calls that use a ticket can instead take a parameter called `usertoken`. The user token parameter can be used with any API that doesn't post to a db/main URL, and also with API_GrantedDBs.
 
