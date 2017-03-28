@@ -16,7 +16,7 @@ This repository is hooked by the CI system, which means the CI Jenkins job will 
 # Author
 Create by `Intuit QBO LQA Automation Team`.
 This utility is open for contributions as well as any comments, suggestions, bugs or improvements.
-For any issue, please don't hesitate to contact Ken_Jiang@intuit.com.
+For any issue, please don't hesitate to contact Shawn_Liu@intuit.com.
 
 # Usage
 
@@ -43,9 +43,9 @@ In this step, you also need to know the test suite database id and suite index. 
 ##### 3. In your Martini based automation project, add quickbase-utils dependency by adding below into the dependency section of your pom.xml
 ```
 	<dependency>
-		<groupId>com.intuit.tools</groupId>
+	    <groupId>com.intuit.tools</groupId>
 	    <artifactId>quickbase-utils</artifactId>
-	    <version>2.1.1-SNAPSHOT</version>
+	    <version>2.2.3-SNAPSHOT</version>
 	</dependency>
 ```
 ##### 4. Add test case ID in the testName for all test methods as below
@@ -58,7 +58,7 @@ Usually for each test case in quickbase, we have one corresponding testNG method
 ```
 ##### 5. Kick off test case in command line by adding the parameters introduced in [Configuration], for example:
 
-`mvn -B -U clean test -DQUICKBASE_UPLOADTESTRESULT=true -DQUICKBASE_USERNAME=[quickbase username] -DQUICKBASE_PASSWORD=[quickbase password] -DQUICKBASE_APPTOKEN=[application token] -DQUICKBASE_DATABASE=[quickbase database] -DQUICKBASE_SUITEINDEX=[suite index] -DsuiteXmlFile=[Test Suite File Path]`
+`mvn -B -U clean test -DQUICKBASE_UPLOADTESTRESULT=true -DQUICKBASE_USERNAME=[quickbase username] -DQUICKBASE_PASSWORD=[quickbase password] -DQUICKBASE_APPTOKEN=[application token] -DQUICKBASE_USERTOKEN=[user token] -DQUICKBASE_DATABASE=[quickbase database] -DQUICKBASE_SUITEINDEX=[suite index] -DsuiteXmlFile=[Test Suite File Path]`
 
 - Depends on your requirement, you also can put all or part of these parameters into your test configuration properties file.
 - To be more secure, you can put the `QUICKBASE_USERNAME` and `QUICKBASE_PASSWORD` into system properties or environment.
@@ -71,11 +71,12 @@ In this section, we explain all supported parameters in this utility.
 
 Enable the `QUICKBASE_UPLOADTESTRESULT` by adding `-DQUICKBASE_UPLOADTESTRESULT=true` in command line, or add property pair `quickbase.uploadTestResult=true` in properties file.
 
-##### 2. Provide the QuickBase account, including url, username, and password
+##### 2. Provide the QuickBase account, including url, username, password, or usertoken
 
 - (Optional if you are using the same quickbase provided in this example)adding quickbase url by adding `-DQUICKBASE_URL="https://intuitcorp.quickbase.com/db/"` or add property pair in Martini configuration file: `quickbase.url=https://intuitcorp.quickbase.com/db/`
-- adding quickbase username by adding `-DQUICKBASE_USERNAME=[quickbase username]` in command line or add property pair in Martini configuration file: `quickbase.username=[quickbase username]`
-- adding quickbase password by adding `-DQUICKBASE_PASSWORD=[quickbase password]` in command line or add property pair in Martini configuration file: `quickbase.password=[quickbase password]`
+- (Optional) If you are using a ticket to call API_Authenticate, adding quickbase username by adding `-DQUICKBASE_USERNAME=[quickbase username]` in command line or add property pair in Martini configuration file: `quickbase.username=[quickbase username]`
+- (Optional) If you are using a ticket to call API_Authenticate, adding quickbase password by adding `-DQUICKBASE_PASSWORD=[quickbase password]` in command line or add property pair in Martini configuration file: `quickbase.password=[quickbase password]`
+- (Optional) If you are using a user token without API_Authenticate, adding a quickbase user token by adding `-DQUICKBASE_USERTOKEN=[user token]` in command line or add property pair in Martini configuration file: `quickbase.usertoken=[quickbase usertoken]`
 
 ##### 3. Provide the application APPTOKEN as below(please find how to get the apptoken in FAQ)
 
@@ -102,26 +103,42 @@ The test case id is the unique identifier of one test case in quickbase. If will
 
 Every time to upload test result, it will overwrite the test run result status in the application of quickbase. 
 
-##### 3. What is application token? How can I get my application's token?
+##### 3. What is [user token]()? How can I get my user token for some a application?
+
+You can create your own user tokens in QuickBase and use them to run APIs and automation with your permissions. Many API calls that use a ticket can instead take a parameter called `usertoken`. The user token parameter can be used with any API that doesn't post to a db/main URL, and also with API_GrantedDBs.
+
+To create a new user token as below:
+- Login to QuickBase, On the user dropdown on the global bar, choose `My preferences`.
+- Under `My User Information`, click the link for `Manage` my user tokens for realm ...
+- Click the `New user token` button. 
+- Click `OK`.
+- In the `Basics` section, enter a Name and a Description for your token. 
+- In the `Assign token to apps` section, click the dropdown arrows to select which apps you want to assign this token to. You can assign a token to as many as 20 apps. 
+- Click `Save`. The new token appears in the list of user tokens. API calls containing this token can now interact with the application. 
+
+- Click `Advanced settings` to expand the section, if needed.
+- Under `Application Tokens`, click the `Manage Application Token` link, you will find the application token string.
+
+##### 4. What is application token? How can I get my application's token?
 
 Application token is the application's unique ID in quickbase. To get this property, you need to login as administrator of this application. You can find your application token as below:
 - Login to QuickBase, in the `App bar`, select the application which you are going to test, click `SETTINGS`, then click `App properties`.
 - Click `Advanced settings` to expand the section, if needed.
 - Under `Application Tokens`, click the `Manage Application Token` link, you will find the application token string.
 
-##### 4. What is test suite database? how can I get my test suite's data base?
+##### 5. What is test suite database? how can I get my test suite's data base?
 
 Quickbase creates separate internal database for test suites under each application. you can find your test suite's data base id as below:
 - Open the test suite in browser, for example, my test suite is https://intuitcorp.quickbase.com/db/bi9b5xkmk?a=q&qid=-1000070
 - In this URL, the string between `/db/` and `?` is the database id, that is `bi9b5xkmk`.
 
-##### 5. What is test suite index? how can I get my test suite index?
+##### 6. What is test suite index? how can I get my test suite index?
 In quickbase, one database can have multiple test suites. So we need to specify the test suite index before we try to search or update the test run.
 You can find the test suite index as below:
 - Open the test suite in browser, for example, my test suite is https://intuitcorp.quickbase.com/db/bi9b5xkmk?a=q&qid=-1000070
 - In the top left corner of this suite, you can find the `Related LQA Test Suite is  '7'`, that means this suite index is `7`.
 ![suite index screenshot](suite-index-intro.png)
 
-##### 6. By this utility, what will be uploaded into the test suite?
+##### 7. By this utility, what will be uploaded into the test suite?
 In the test suite, we have added test runs for each of test case, so when automation running, this utility will upload the test result of each test method to corresponding test run. The test result of each test method can be `Automation SUCCESS`, `Automation FAILURE`, and `Automation SKIP` (which respectively mean test case `passed`, `failed`, `skipped` - because of precondition failure), so you can find these status in `Status` column of each test run as below (highlighted in red box):
 ![test run status screenshot](test-result-by-automation.png)
