@@ -106,7 +106,6 @@ Every time to upload test result, it will overwrite the test run result status i
 ##### 3. What is [user token](http://www.quickbase.com/quickbase-blog/july-2016-release-notes)? How can I get my user token for some a application?
 
 You can create your own user tokens in QuickBase and use them to run APIs and automation with your permissions. Many API calls that use a ticket can instead take a parameter called `usertoken`. The user token parameter can be used with any API that doesn't post to a db/main URL, and also with API_GrantedDBs.
-
 To create a new user token as below:
 - Login to QuickBase, On the user dropdown on the global bar, choose `My preferences`.
 - Under `My User Information`, click the link for `Manage` my user tokens for realm ...
@@ -115,9 +114,6 @@ To create a new user token as below:
 - In the `Basics` section, enter a Name and a Description for your token. 
 - In the `Assign token to apps` section, click the dropdown arrows to select which apps you want to assign this token to. You can assign a token to as many as 20 apps. 
 - Click `Save`. The new token appears in the list of user tokens. API calls containing this token can now interact with the application. 
-
-- Click `Advanced settings` to expand the section, if needed.
-- Under `Application Tokens`, click the `Manage Application Token` link, you will find the application token string.
 
 ##### 4. What is application token? How can I get my application's token?
 
